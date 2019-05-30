@@ -1,0 +1,49 @@
+---
+title: "LA_crime"
+author: "Andrey Korotkiy"
+date: "May 30, 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+![Steps](la.jpg)
+
+## 1. Data Wrangling
+
+Librarys
+```{r}
+library(tidyverse)
+```
+
+```{r}
+df <- read_csv('~/Desktop/Data science/Datasets/LA Crime Data/Crime_Data_from_2010_to_Present.csv')
+
+str(df)
+```
+
+```{r}
+df$`Date Reported` <- as.Date(df$`Date Reported`, format = "%m/%d/%Y")
+df$`Date Occurred` <- as.Date(df$`Date Occurred`, format = "%m/%d/%Y")
+df$`Weapon Used Code` <- as.factor(df$`Weapon Used Code`)
+
+df$YearOccur  <- as.numeric(format(df$`Date Occurred`,'%Y'))
+```
+
+```{r}
+ggplot(df, aes(x= YearOccur)) + 
+  geom_bar() +
+  ggtitle("Crimes in LA by years")
+```
+
+```{r}
+ggplot(df, aes(x= YearOccur, fill = `Weapon Used Code`)) + 
+  geom_bar() +
+  ggtitle("Crimes and weapons codes")
+```
+
+
